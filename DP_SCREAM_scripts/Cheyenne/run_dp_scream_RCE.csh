@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_bc
+#PBS -N zPIRE_RCE_aa
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
@@ -29,12 +29,17 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
 #######  Radiative Convective Equilibrium
 #######
 #######  Script Author: P. Bogenschutz (bogenschutz1@llnl.gov)
+#######  Cheyenne Modifications: P. Blossey (pblossey@uw.edu)
 
 #######################################################
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename scream_dp_RCE
+  #   If you're like me, you'll end up running this
+  #   many times over.  I like to have a couple of letter
+  #   at the end of the case name that I can index each time
+  #   I change something.
+  setenv casename scream_dp_RCE_aa
 
   # Set the case directory here
   setenv casedirectory /global/cscratch1/sd/bogensch/DPSCREAM_simulations
