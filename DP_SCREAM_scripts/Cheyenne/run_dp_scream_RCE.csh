@@ -42,19 +42,19 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   setenv casename scream_dp_RCE_aa
 
   # Set the case directory here
-  setenv casedirectory /global/cscratch1/sd/bogensch/DPSCREAM_simulations
+  setenv casedirectory /glade/scratch/$USER/DPSCREAM_simulations
 
   # Directory where code lives
-  setenv code_dir /global/homes/b/bogensch/ACME_development
+  setenv code_dir /glade/u/home/pblossey/work/PIRE/Sandbox/
 
   # Code tag name
-  setenv code_tag SCREAM_DP
+  setenv code_tag scream
 
   # Name of machine you are running on (i.e. cori, anvil, etc)
-  setenv machine cori-haswell
+  setenv machine cheyenne
 
   # Name of project to run on, if submitting to queue
-  setenv projectname e3sm
+  setenv projectname UWAS0108 # PIRE UW project on Cheyenne
 
 
   # Set to debug queue?
