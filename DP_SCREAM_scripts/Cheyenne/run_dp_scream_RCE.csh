@@ -1,4 +1,26 @@
-#!/bin/csh -fe
+#!/bin/tcsh
+#PBS -N zPIRE_RCE_SMALL_3km_bc
+#PBS -A UWAS0108
+#PBS -l walltime=00:40:00
+#PBS -q economy
+#PBS -j oe
+#PBS -k eod
+#PBS -m e
+#PBS -M pblossey@uw.edu
+#PBS -l select=1:ncpus=8:mpiprocs=8
+
+# This script compiles scream and sets a DP-SCREAM case running
+#   based on the RCE setup below.  The actual simulation takes
+#   place in a separate batch job, so that only 8 cores are
+#   requested above for the compilation.
+
+#  !!!!!!!!!! Change email above to your address !!!!!!!!!
+#  TODO: Find out how to set the email address in the job
+#     header for the actual simulation.
+
+# Set up modules
+module purge
+module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
 
 #######################################################################
 #######################################################################
