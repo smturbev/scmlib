@@ -313,6 +313,7 @@ EOF
   ./xmlchange ICE_NX="${comp_mods_nx}",ICE_NY=1
 
   ./xmlchange DOCN_AQPCONST_VALUE=$sst_val
+  ./xmlchange DOCN_MODE="sst_aquap_constant"
 
 
 # Set model timesteps
