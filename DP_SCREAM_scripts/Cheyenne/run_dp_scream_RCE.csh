@@ -44,6 +44,9 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   # Set the case directory here
   setenv casedirectory /glade/scratch/$USER/DPSCREAM_simulations
 
+  # Directory where inputdata lives
+  setenv inputdata_dir /glade/u/home/$USER/work/E3SM/inputdata
+
   # Directory where code lives
   setenv code_dir /glade/u/home/pblossey/work/PIRE/Sandbox/
 
@@ -55,6 +58,9 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
 
   # Name of project to run on, if submitting to queue
   setenv projectname UWAS0108 # PIRE UW project on Cheyenne
+
+  # Name of queue for job submission
+  setenv job_queue economy
 
 
   # Set to debug queue?
@@ -179,6 +185,8 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
 # Define executable and run directories
   ./xmlchange --id EXEROOT --val "${case_build_dir}"
   ./xmlchange --id RUNDIR --val "${case_run_dir}"
+  ./xmlchange --id DIN_LOC_ROOT --val "${inputdata_dir}"
+  ./xmlchange --id JOB_QUEUE --val "${job_queue}"
 
 # Set to debug, only on certain machines
   if ($debug_queue == 'true') then
