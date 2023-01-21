@@ -74,7 +74,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set num_procs = 512
 
   # set walltime
-  set walltime = '16:00:00'
+  set walltime = '12:00:00'
 
   ## SET DOMAIN SIZE AND RESOLUTION:
   # - Note that these scripts are set to run with dx=dy=3.33 km
