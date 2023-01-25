@@ -6,12 +6,13 @@
 #PBS -j oe
 #PBS -k eod
 #PBS -m e
-#PBS -M pblossey@uw.edu
+#PBS -M !!!!YOUR_EMAIL_HERE!!!!
 #PBS -l select=1:ncpus=8:mpiprocs=8
 
 # This script compiles scream and sets a DP-SCREAM case running
 #   based on the RCE setup below.  The actual simulation takes
 #   place in a separate batch job, so that only 8 cores are
+
 #   requested above for the compilation.
 
 #  !!!!!!!!!! Change email above to your address !!!!!!!!!
@@ -51,7 +52,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   setenv code_dir /glade/u/home/pblossey/work/PIRE/Sandbox/
 
   # Code tag name
-  setenv code_tag scream
+  setenv code_tag SCREAM-cheyenne
 
   # Name of machine you are running on (i.e. cori, anvil, etc)
   setenv machine cheyenne
@@ -62,6 +63,10 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   # Name of queue for job submission
   setenv job_queue economy
 
+  # Compile/run with debugging (helpful to 
+  #   understand where the model is crashing)
+  setenv debug_setting FALSE
+
 
   # Set to debug queue?
   # - Some cases are small enough to run on debug queues
@@ -71,7 +76,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
 
   # Set number of processors to use, should be less than or equal
   #   to the total number of elements in your domain.
-  set num_procs = 512
+  set num_procs = 288
 
   # set walltime
   set walltime = '12:00:00'
@@ -85,12 +90,12 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   # (there are 3x3 unique columns per element, hence the "3" factor)
 
   # Set number of elements in the x&y directions
-  set num_ne_x = 50
-  set num_ne_y = 50
+  set num_ne_x = 48
+  set num_ne_y = 48
 
   # Set domain length [m] in x&y direction
-  set domain_size_x = 500000
-  set domain_size_y = 500000
+  set domain_size_x = 480000
+  set domain_size_y = 480000
 
   # BELOW SETS RESOLUTION DEPENDENT SETTINGS
   # (Note that all default values below are appropriate for dx=dy=3.33 km and do not
@@ -313,8 +318,8 @@ EOF
   ./xmlchange ICE_NX="${comp_mods_nx}",ICE_NY=1
 
   ./xmlchange DOCN_AQPCONST_VALUE=$sst_val
-  ./xmlchange DOCN_MODE="sst_aquap_constant"
 
+  ./xmlchange DEBUG=$debug_setting
 
 # Set model timesteps
 
