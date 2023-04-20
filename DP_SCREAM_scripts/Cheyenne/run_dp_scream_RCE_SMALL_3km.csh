@@ -1,12 +1,12 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_aa
+#PBS -N zPIRE_RCE_SMALL_3km_aj
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
 #PBS -j oe
 #PBS -k eod
-#PBS -m e
-#PBS -M !!!!YOUR_EMAIL_HERE!!!!
+#PBS -m a
+#PBS -M smturbev@uw.edu
 #PBS -l select=1:ncpus=8:mpiprocs=8
 
 # This script compiles scream and sets a DP-SCREAM case running
@@ -39,14 +39,15 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_aa
+  setenv casename scream_dp_RCE_SMALL_3km_aj
 
 
   # Set the case directory here
   setenv casedirectory /glade/scratch/$USER/DPSCREAM_simulations
 
   # Directory where inputdata lives
-  setenv inputdata_dir /glade/u/home/$USER/work/E3SM/inputdata
+  #setenv inputdata_dir /glade/u/home/$USER/work/E3SM/inputdata
+  setenv inputdata_dir /glade/work/$USER/E3SM/inputdata
 
   # Directory where code lives
   setenv code_dir /glade/u/home/pblossey/work/PIRE/Sandbox/
@@ -152,7 +153,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
   set stop_n = 20
-  set iop_file = RCE_iopfile_4scam.nc #IOP file name
+  set iop_file = RCE_iopfile_4scam_newTq.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
 # End Case specific stuff here
 
