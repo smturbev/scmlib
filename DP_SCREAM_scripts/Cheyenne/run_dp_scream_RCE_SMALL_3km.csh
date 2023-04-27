@@ -1,11 +1,11 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_aj
+#PBS -N zPIRE_RCE_SMALL_3km_ak
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
 #PBS -j oe
 #PBS -k eod
-#PBS -m a
+#PBS -m b,e,f
 #PBS -M smturbev@uw.edu
 #PBS -l select=1:ncpus=8:mpiprocs=8
 
@@ -39,7 +39,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_aj
+  setenv casename scream_dp_RCE_SMALL_3km_ak
 
 
   # Set the case directory here
@@ -254,7 +254,7 @@ cat <<EOF >> user_nl_eam
  micro_tend_output = .false.
  fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','TOT_CLD_VISTAU','TOT_ICLD_VISTAU','UU','VQ','VT','VU','VV','WSUB','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
  mfilt = 5000, 5000
- nhtfrq = -12, -1
+ nhtfrq = -24, -1
  avgflag_pertape='A','I'
  scmlat = $lat
  scmlon = $lon
