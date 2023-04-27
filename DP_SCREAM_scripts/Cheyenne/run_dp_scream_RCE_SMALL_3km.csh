@@ -146,14 +146,14 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set do_iop_srf_prop = .false. # Use surface fluxes in IOP file?
   set do_iop_nudge_tq = .false. # Relax T&Q to observations?
   set do_iop_nudge_uv = .false. # Relax U&V to observations?
-  set do_iop_subsidence = .false. # compute LS vertical transport?
+  set do_iop_subsidence = .true. # compute LS vertical transport?
   set do_turnoff_swrad = .false. # Turn off SW calculation
   set do_turnoff_lwrad = .false. # Turn off LW calculation
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
-  set stop_n = 20
-  set iop_file = RCE_iopfile_4scam_newTq.nc #IOP file name
+  set stop_n = 12
+  set iop_file = RCE_iopfile_4scam_newTqw.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
 # End Case specific stuff here
 
