@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_ac
+#PBS -N zPIRE_RCE_SMALL_ae
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
@@ -39,7 +39,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_ac
+  setenv casename scream_dp_RCE_SMALL_ae
 
 
   # Set the case directory here
@@ -76,13 +76,13 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
 
   # Set number of processors to use, should be less than or equal
   #   to the total number of elements in your domain.
-  set num_procs = 216
+  set num_procs = 648 #216
 
   # set walltime
   set walltime = '12:00:00'
 
   ## SET DOMAIN SIZE AND RESOLUTION:
-  # - Note that these scripts are set to run with dx=dy=3.33 km
+  # - Note that these scripts are set to run with dx=dy=1 km
   # which is the default SCREAM resolution.
 
   # To estimate dx (analogous for dy):
@@ -145,14 +145,14 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set do_iop_srf_prop = .false. # Use surface fluxes in IOP file?
   set do_iop_nudge_tq = .false. # Relax T&Q to observations?
   set do_iop_nudge_uv = .false. # Relax U&V to observations?
-  set do_iop_subsidence = .false. # compute LS vertical transport?
+  set do_iop_subsidence = .true. # compute LS vertical transport?
   set do_turnoff_swrad = .false. # Turn off SW calculation
   set do_turnoff_lwrad = .false. # Turn off LW calculation
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
-  set stop_n = 10 # 20
-  set iop_file = RCE_iopfile_4scam.nc #IOP file name
+  set stop_n = 2 # 20
+  set iop_file = RCE_iopfile_4scam_smooth-mean-ascent.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
 # End Case specific stuff here
 
