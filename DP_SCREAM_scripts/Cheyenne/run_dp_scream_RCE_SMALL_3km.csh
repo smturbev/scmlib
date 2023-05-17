@@ -17,6 +17,7 @@
 #  !!!!!!!!!! Change email above to your address !!!!!!!!!
 #  TODO: Find out how to set the email address in the job
 #     header for the actual simulation.
+#  added below (option to ./case.submit --mail-user $email
 
 # Set up modules
 module purge
@@ -74,6 +75,9 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   # - Setting to true only supported for NERSC and Livermore Computing,
   #   else user will need to modify script to submit to debug queue
   setenv debug_queue false
+  
+  # Set email to for submitting case
+  set email = smturbev@uw.edu
 
   # Set number of processors to use, should be less than or equal
   #   to the total number of elements in your domain.
@@ -338,6 +342,6 @@ EOF
   ./case.build
 
 # Submit the case
-  ./case.submit
+  ./case.submit --mail-user $email -M begin,end
 
   exit
