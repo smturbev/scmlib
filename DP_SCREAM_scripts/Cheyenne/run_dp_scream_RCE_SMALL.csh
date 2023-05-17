@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_ae
+#PBS -N zPIRE_RCE_SMALL_af
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
@@ -39,7 +39,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_ae
+  setenv casename scream_dp_RCE_SMALL_af
 
 
   # Set the case directory here
@@ -145,14 +145,14 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set do_iop_srf_prop = .false. # Use surface fluxes in IOP file?
   set do_iop_nudge_tq = .false. # Relax T&Q to observations?
   set do_iop_nudge_uv = .false. # Relax U&V to observations?
-  set do_iop_subsidence = .true. # compute LS vertical transport?
+  set do_iop_subsidence = .false. # compute LS vertical transport?
   set do_turnoff_swrad = .false. # Turn off SW calculation
   set do_turnoff_lwrad = .false. # Turn off LW calculation
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
-  set stop_n = 2 # 20
-  set iop_file = RCE_iopfile_4scam_smooth-mean-ascent.nc #IOP file name
+  set stop_n = 1 # 20
+  set iop_file = RCE_iopfile_4scam.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
 # End Case specific stuff here
 
@@ -337,6 +337,6 @@ EOF
   ./case.build
 
 # Submit the case
-  ./case.submit
+  ./case.submit --mail-user smturbev@uw.edu -M begin,end
 
   exit
