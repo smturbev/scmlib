@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_al
+#PBS -N zPIRE_RCE_SMALL_3km_am
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
@@ -40,7 +40,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_al
+  setenv casename scream_dp_RCE_SMALL_3km_am
 
 
   # Set the case directory here
@@ -156,8 +156,8 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
-  set stop_n = 12
-  set iop_file = RCE_iopfile_4scam_smooth-mean-ascent.nc #IOP file name
+  set stop_n = 20
+  set iop_file = RCE_iopfile_4scam_smooth_w_profile.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
 # End Case specific stuff here
 
@@ -255,7 +255,7 @@ cat <<EOF >> user_nl_eam
  iop_nudge_tq = $do_iop_nudge_tq
  iop_nudge_uv = $do_iop_nudge_uv
  history_aerosol = .false.
- micro_tend_output = .false.
+ micro_tend_output = .true.
  fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','TOT_CLD_VISTAU','TOT_ICLD_VISTAU','UU','VQ','VT','VU','VV','WSUB','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
  mfilt = 5000, 5000
  nhtfrq = -24, -1
