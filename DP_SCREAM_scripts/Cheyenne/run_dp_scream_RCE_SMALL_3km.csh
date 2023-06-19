@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_ba
+#PBS -N zPIRE_RCE_SMALL_3km_ca
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
@@ -40,7 +40,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_ba
+  setenv casename scream_dp_RCE_SMALL_3km_ca
 
 
   # Set the case directory here
@@ -156,7 +156,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
-  set stop_n = 20
+  set stop_n = 1
   set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
 # End Case specific stuff here
