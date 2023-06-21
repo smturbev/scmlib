@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_cd
+#PBS -N zPIRE_RCE_SMALL_3km_ce
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
@@ -37,7 +37,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_cd
+  setenv casename scream_dp_RCE_SMALL_3km_ce
 
 
   # Set the case directory here
