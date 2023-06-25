@@ -38,7 +38,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   at the end of the case name that I can index each time
   #   I change something.
   setenv casename scream_dp_RCE_SMALL_3km_ce
-
+  # ce = dep_scaling_small=1., new_lp_freezing=.true.
 
   # Set the case directory here
   setenv casedirectory /glade/scratch/$USER/DPSCREAM_simulations
@@ -48,10 +48,10 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   setenv inputdata_dir /glade/work/$USER/E3SM/inputdata
 
   # Directory where code lives
-  setenv code_dir /glade/u/home/pblossey/work/PIRE/Sandbox/
+  setenv code_dir /glade/u/home/$USER
 
   # Code tag name
-  setenv code_tag SCREAM-cheyenne
+  setenv code_tag scream
 
   # Name of machine you are running on (i.e. cori, anvil, etc)
   setenv machine cheyenne
@@ -64,7 +64,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
 
   # Compile/run with debugging (helpful to 
   #   understand where the model is crashing)
-  setenv debug_setting TRUE
+  setenv debug_setting False
 
 
   # Set to debug queue?
@@ -152,7 +152,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set do_turnoff_lwrad = .false. # Turn off LW calculation
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
-  set stop_option = nsteps
+  set stop_option = ndays
   set stop_n = 3
   set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
@@ -255,8 +255,8 @@ cat <<EOF >> user_nl_eam
  micro_tend_output = .true.
  fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','TOT_CLD_VISTAU','TOT_ICLD_VISTAU','UU','VQ','VT','VU','VV','WSUB','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
  mfilt = 5000, 5000
- nhtfrq = -24, -1
- avgflag_pertape='A','I'
+ nhtfrq = -6, -1
+ avgflag_pertape='I','I'
  scmlat = $lat
  scmlon = $lon
  iradsw = $iradsw_in
