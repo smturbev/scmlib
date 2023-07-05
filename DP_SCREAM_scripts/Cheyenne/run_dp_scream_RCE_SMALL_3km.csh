@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_cg
+#PBS -N zPIRE_RCE_SMALL_3km_ck
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
@@ -37,8 +37,8 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_cg
-  # ce = dep_scaling_small=0.5, new_lp_freezing=.false.
+  setenv casename scream_dp_RCE_SMALL_3km_ck
+  # cj = sed_scaling_small=1.0, dep_scaling_small=1.0, new_lp_freezing=.false.
 
   # Set the case directory here
   setenv casedirectory /glade/scratch/$USER/DPSCREAM_simulations
@@ -81,7 +81,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set num_procs = 36
 
   # set walltime
-  set walltime = '12:00:00'
+  set walltime = '6:00:00'
 
   ## SET DOMAIN SIZE AND RESOLUTION:
   # - Note that these scripts are set to run with dx=dy=3.33 km
