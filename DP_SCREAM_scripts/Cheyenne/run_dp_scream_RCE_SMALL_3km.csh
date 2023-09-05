@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_ck
+#PBS -N zPIRE_RCE_SMALL_3km_db
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
@@ -37,9 +37,10 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_ck
+  setenv casename scream_dp_RCE_SMALL_3km_db
   # cj = sed_scaling_small=1.0, dep_scaling_small=1.0, new_lp_freezing=.false.
-
+  # d - testing 3D instantaneous output: da=+6,'I',1day; db=-6,'I',1day,fincl='OMEGA';
+  
   # Set the case directory here
   setenv casedirectory /glade/scratch/$USER/DPSCREAM_simulations
 
@@ -153,7 +154,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
-  set stop_n = 3
+  set stop_n = 1
   set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
 # End Case specific stuff here
@@ -254,6 +255,7 @@ cat <<EOF >> user_nl_eam
  history_aerosol = .false.
  micro_tend_output = .true.
  fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','TOT_CLD_VISTAU','TOT_ICLD_VISTAU','UU','VQ','VT','VU','VV','WSUB','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
+ fincl1='OMEGA','QRL','QRS','CLDICE'
  mfilt = 5000, 5000
  nhtfrq = -6, -1
  avgflag_pertape='I','I'
