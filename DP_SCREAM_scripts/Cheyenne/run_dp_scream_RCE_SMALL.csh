@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_af
+#PBS -N zPIRE_RCE_SMALL_ag
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q economy
@@ -39,7 +39,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_af
+  setenv casename scream_dp_RCE_SMALL_ag
 
 
   # Set the case directory here
@@ -49,10 +49,10 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   setenv inputdata_dir /glade/work/$USER/E3SM/inputdata
 
   # Directory where code lives
-  setenv code_dir /glade/u/home/pblossey/work/PIRE/Sandbox/
+  setenv code_dir /glade/u/home/$USER
 
   # Code tag name
-  setenv code_tag SCREAM-cheyenne
+  setenv code_tag scream
 
   # Name of machine you are running on (i.e. cori, anvil, etc)
   setenv machine cheyenne
@@ -62,6 +62,9 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
 
   # Name of queue for job submission
   setenv job_queue economy
+
+  # Set email for submitting case (getting error msgs)
+  set email = smturbev@uw.edu
 
   # Compile/run with debugging (helpful to 
   #   understand where the model is crashing)
@@ -152,7 +155,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
   set stop_n = 1 # 20
-  set iop_file = RCE_iopfile_4scam.nc #IOP file name
+  set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
 # End Case specific stuff here
 
@@ -337,6 +340,6 @@ EOF
   ./case.build
 
 # Submit the case
-  ./case.submit --mail-user smturbev@uw.edu -M begin,end
+  ./case.submit --mail-user $email -M begin,end
 
   exit
