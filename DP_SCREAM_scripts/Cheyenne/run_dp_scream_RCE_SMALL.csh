@@ -1,8 +1,8 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_ag
+#PBS -N zPIRE_RCE_SMALL_ai
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
-#PBS -q economy
+#PBS -q premium
 #PBS -j oe
 #PBS -k eod
 #PBS -m e
@@ -39,8 +39,8 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_ag
-
+  setenv casename scream_dp_RCE_SMALL_ai
+  # ah=1hr,1km,36cores; ai=1hr,1km,216cores(num_proc)
 
   # Set the case directory here
   setenv casedirectory /glade/scratch/$USER/DPSCREAM_simulations
@@ -79,7 +79,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
 
   # Set number of processors to use, should be less than or equal
   #   to the total number of elements in your domain.
-  set num_procs = 648 #216
+  set num_procs = 216 
 
   # set walltime
   set walltime = '12:00:00'
@@ -153,7 +153,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set do_turnoff_lwrad = .false. # Turn off LW calculation
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
-  set stop_option = ndays
+  set stop_option = nhours
   set stop_n = 1 # 20
   set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
