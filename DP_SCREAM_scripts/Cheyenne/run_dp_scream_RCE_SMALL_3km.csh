@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_i_bgicenuc
+#PBS -N zPIRE_RCE_SMALL_3km_f_def_pertlim
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q premium
@@ -37,8 +37,8 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_i_bgicenuc
-  # f :: default, 
+  setenv casename scream_dp_RCE_SMALL_3km_f_def_pertlim
+  # f :: default, default with perturbed temperature ic using pertlim
   # g :: small ice - 1/2 sed, 2 sed, 1/2 dep, 2 dep, 1/8 dep
   # h :: all ice   - 1/2 sed, 2 sed, 1/2 dep, 2 dep, 1/8 dep
   # i :: large scale ascent (lsascent), bg_ice_nuc
@@ -157,10 +157,10 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
-  set stop_n = 1
+  set stop_n = 30
   set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
-  set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
-  set p3_new_icenuc = .true.
+  set sst_val = 304 # set constant SST value (ONLY valid for RCE case)
+  set p3_new_icenuc = .false.
 # End Case specific stuff here
 
   # Location of IOP file
@@ -273,7 +273,7 @@ fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','TOT_CLD_VISTAU
  iradlw = $iradlw_in
  scm_iop_srf_prop = $do_iop_srf_prop
  iopfile = '$input_data_dir/$iop_path/$iop_file'
- pertlim = 0.001
+ pertlim = 0.1
  iop_perturb_high = 900.0D0
  ncdata='$input_data_dir/atm/cam/inic/homme/cami_mam3_Linoz_ne30np4_SCREAM_L128_c160214.nc'
 EOF
