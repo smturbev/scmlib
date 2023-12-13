@@ -4,4 +4,6 @@ DP_diagnostics/notebooks/.ipynb_checkpoints/
 DP_SCREAM_scripts/Cheyenne/z*
 DP_diagnostics/notebooks/plots/.ipynb_checkpoints
 DP_diagnostics/notebooks/__pycache__/
-DP_diagnostics/notebooks/plots/
+DP_diagnostics/notebooks/plots/old/
+DP_diagnostics/notebooks/pproc/.ipynb_checkpoints/
+
