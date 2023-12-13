@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_f_def_pertlim
+#PBS -N zPIRE_RCE_SMALL_3km_j_296K
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q premium
@@ -37,8 +37,8 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_f_def_pertlim
-  # f :: default, default with perturbed temperature ic using pertlim
+  setenv casename scream_dp_RCE_SMALL_3km_j_296K
+  # f :: default, default with perturbed temperature ic using pertlim=0.1, 0.01
   # g :: small ice - 1/2 sed, 2 sed, 1/2 dep, 2 dep, 1/8 dep
   # h :: all ice   - 1/2 sed, 2 sed, 1/2 dep, 2 dep, 1/8 dep
   # i :: large scale ascent (lsascent), bg_ice_nuc
@@ -159,7 +159,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set stop_option = ndays
   set stop_n = 30
   set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
-  set sst_val = 304 # set constant SST value (ONLY valid for RCE case)
+  set sst_val = 296 # set constant SST value (ONLY valid for RCE case)
   set p3_new_icenuc = .false.
 # End Case specific stuff here
 
@@ -262,8 +262,8 @@ cat <<EOF >> user_nl_eam
  dep_scaling_small = 1.0
  sed_scaling_small = 1.0
  scale_all_ice = .false.
-fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','TOT_CLD_VISTAU','TOT_ICLD_VISTAU','UU','VQ','VT','VU','VV','WSUB','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
- fincl1='OMEGA','DYN_OMEGA','QRL','QRS','CLDICE'
+fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','UU','VQ','VT','VU','VV','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECC','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
+ fincl1='OMEGA','DYN_OMEGA','QRL','QRS','CLDICE','WSUB'
  mfilt = 5000, 5000
  nhtfrq = -6, -1
  avgflag_pertape='I','I'
@@ -273,7 +273,7 @@ fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','TOT_CLD_VISTAU
  iradlw = $iradlw_in
  scm_iop_srf_prop = $do_iop_srf_prop
  iopfile = '$input_data_dir/$iop_path/$iop_file'
- pertlim = 0.1
+ pertlim = 0.001
  iop_perturb_high = 900.0D0
  ncdata='$input_data_dir/atm/cam/inic/homme/cami_mam3_Linoz_ne30np4_SCREAM_L128_c160214.nc'
 EOF
