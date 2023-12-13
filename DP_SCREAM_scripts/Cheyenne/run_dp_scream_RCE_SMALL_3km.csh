@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_j_296K
+#PBS -N zPIRE_RCE_SMALL_3km_f_def_pbogen_updates
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q premium
@@ -37,7 +37,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_j_296K
+  setenv casename scream_dp_RCE_SMALL_3km_f_def_pbogen_updates
   # f :: default, default with perturbed temperature ic using pertlim=0.1, 0.01
   # g :: small ice - 1/2 sed, 2 sed, 1/2 dep, 2 dep, 1/8 dep
   # h :: all ice   - 1/2 sed, 2 sed, 1/2 dep, 2 dep, 1/8 dep
@@ -159,7 +159,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   set stop_option = ndays
   set stop_n = 30
   set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
-  set sst_val = 296 # set constant SST value (ONLY valid for RCE case)
+  set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
   set p3_new_icenuc = .false.
 # End Case specific stuff here
 
@@ -258,6 +258,8 @@ cat <<EOF >> user_nl_eam
  iop_nudge_uv = $do_iop_nudge_uv
  history_aerosol = .false.
  micro_tend_output = .true.
+ theta_hydrostatic_mode = .false.
+ tstep_type = 9
  do_new_bg_lp_frz = $p3_new_icenuc
  dep_scaling_small = 1.0
  sed_scaling_small = 1.0
