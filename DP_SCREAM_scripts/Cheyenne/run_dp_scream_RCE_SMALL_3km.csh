@@ -1,13 +1,14 @@
 #!/bin/tcsh
-#PBS -N zPIRE_RCE_SMALL_3km_f_def_pbogen_updates
+#PBS -N zPIRE_RCE_SMALL_3km_f_def_derecho
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
-#PBS -q premium
+#PBS -q main
+#PBS -l job_priority=premium
 #PBS -j oe
 #PBS -k eod
 #PBS -m e
 #PBS -M smturbev@uw.edu
-#PBS -l select=1:ncpus=8:mpiprocs=8
+#PBS -l select=1:ncpus=128:mpiprocs=128:ompthreads=1
 
 # This script compiles scream and sets a DP-SCREAM case running
 #   based on the RCE setup below.  The actual simulation takes
@@ -37,7 +38,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   #   many times over.  I like to have a couple of letter
   #   at the end of the case name that I can index each time
   #   I change something.
-  setenv casename scream_dp_RCE_SMALL_3km_f_def_pbogen_updates
+  setenv casename scream_dp_RCE_SMALL_3km_f_def_derecho
   # f :: default, default with perturbed temperature ic using pertlim=0.1, 0.01
   # g :: small ice - 1/2 sed, 2 sed, 1/2 dep, 2 dep, 1/8 dep
   # h :: all ice   - 1/2 sed, 2 sed, 1/2 dep, 2 dep, 1/8 dep
@@ -45,7 +46,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   # j :: 304K, 296K
 
   # Set the case directory here
-  setenv casedirectory /glade/scratch/$USER/DPSCREAM_simulations
+  setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
 
   # Directory where inputdata lives
   #setenv inputdata_dir /glade/u/home/$USER/work/E3SM/inputdata
@@ -58,7 +59,7 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   setenv code_tag scream
 
   # Name of machine you are running on (i.e. cori, anvil, etc)
-  setenv machine cheyenne
+  setenv machine derecho
 
   # Name of project to run on, if submitting to queue
   setenv projectname UWAS0108 # PIRE UW project on Cheyenne
@@ -198,7 +199,8 @@ module load ncarenv intel ncarcompilers mpt netcdf cmake python mkl
   ./xmlchange --id EXEROOT --val "${case_build_dir}"
   ./xmlchange --id RUNDIR --val "${case_run_dir}"
   ./xmlchange --id DIN_LOC_ROOT --val "${inputdata_dir}"
-  ./xmlchange --id JOB_QUEUE --val "${job_queue}"
+  ./xmlchange --id JOB_QUEUE --val "main"
+  ./xmlchange --id JOB_PRIORITY --val "${job_queue}"
 
 # Set to debug, only on certain machines
   if ($debug_queue == 'true') then

@@ -1,19 +1,19 @@
 #!/bin/tcsh
-#PBS -N zATEST_aw
+#PBS -N zATEST_ad
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
 #PBS -j oe
 #PBS -k eod
 #PBS -m e
-#PBS -M pblossey@uw.edu
+#PBS -M smturbev@uw.edu
 #PBS -l select=1:ncpus=8:mpiprocs=8
 
 # This script compiles scream and sets a DP-SCREAM case running
 #   based on the RCE setup below.
 
 # Set up modules
-source /glade/u/apps/derecho/23.06/spack/opt/spack/lmod/8.7.20/gcc/7.5.0/pdxb/lmod/lmod/init/tcsh
+source /glade/u/apps/derecho/23.09/spack/opt/spack/lmod/8.7.24/gcc/7.5.0/c645/lmod/lmod/init/tcsh
 module purge
 module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 netcdf cmake parallel-netcdf parallelio/2.6.2-static
 #######################################################################
@@ -29,19 +29,19 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename ATEST_aw #scream_dp_RCE_SMALL_3km_ec
+  setenv casename ATEST_ad #scream_dp_RCE_SMALL_3km_ec
 
   # Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
 
   # Directory where inputdata lives
-  setenv inputdata_dir /glade/u/home/$USER/work/E3SM/inputdata
+  setenv inputdata_dir /glade/work/$USER/E3SM/inputdata
 
   # Directory where code lives
-  setenv code_dir /glade/u/home/$USER/work/PIRE/Sandbox/
+  setenv code_dir /glade/u/home/$USER
 
   # Code tag name
-  setenv code_tag SCREAM-cheyenne
+  setenv code_tag scream
 
   # Name of machine you are running on (i.e. cori, anvil, etc)
   setenv machine derecho-cpu
@@ -53,6 +53,8 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   setenv job_queue main
   setenv job_priority economy
 
+  # set email for error messages
+  set email = smturbev@uw.edu
 
   # Set to debug queue?
   # - Some cases are small enough to run on debug queues
@@ -136,10 +138,11 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set do_turnoff_lwrad = .false. # Turn off LW calculation
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
-  set stop_option = ndays
-  set stop_n = 20
-  set iop_file = RCE_iopfile_4scam.nc #IOP file name
+  set stop_option = nhours
+  set stop_n = 3
+  set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
+  set p3_new_icenuc = .false. # Turn off new ice nucleation scheme in P3
 # End Case specific stuff here
 
   # Location of IOP file
@@ -191,7 +194,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   endif
 
 # Get local input data directory path
-  set input_data_dir = `./xmlquery DIN_LOC_ROOT -value`
+  set input_data_dir = `./xmlquery DIN_LOC_ROOT --value`
 
 # need to use single thread
   set npes = $num_procs
@@ -236,11 +239,18 @@ cat <<EOF >> user_nl_eam
  iop_nudge_tq = $do_iop_nudge_tq
  iop_nudge_uv = $do_iop_nudge_uv
  history_aerosol = .false.
- micro_tend_output = .false.
- fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','TOT_CLD_VISTAU','TOT_ICLD_VISTAU','UU','VQ','VT','VU','VV','WSUB','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
+ micro_tend_output = .true.
+ theta_hydrostatic_mode = .false.
+ tstep_type = 9
+ do_new_bg_lp_frz = $p3_new_icenuc
+ dep_scaling_small = 1.0
+ sed_scaling_small = 1.0
+ scale_all_ice = .false.
+fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','UU','VQ','VT','VU','VV','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECC','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
+ fincl1='OMEGA','DYN_OMEGA','QRL','QRS','CLDICE','WSUB'
  mfilt = 5000, 5000
- nhtfrq = -24, -1
- avgflag_pertape='A','I'
+ nhtfrq = -6, -1
+ avgflag_pertape='I','I'
  scmlat = $lat
  scmlon = $lon
  iradsw = $iradsw_in
@@ -323,6 +333,6 @@ EOF
   ./case.build
 
 # Submit the case
-  ./case.submit
+  ./case.submit --mail-user $email -M begin,end
 
   exit
