@@ -1,0 +1,150 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) ncarenv/23.09
+ERROR: Case directory /glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_aa_default/case_scripts already exists
+For your changes to take effect, run:
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.setup --reset
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.build --clean-all
+./case.build
+For your changes to take effect, run:
+./case.build --clean-all
+./case.build
+Setting resource.RLIMIT_STACK to -1 from (-1, -1)
+Machine/Decomp/Pes configuration has already been done ...skipping
+If an old case build already exists, might want to run 'case.build --clean' before building
+Generating component namelists as part of setup
+  2024-07-15 16:14:03 atm 
+Create namelist for component eam
+   Calling /glade/u/home/sturbeville/scream/components/eam//cime_config/buildnml
+ERROR: Command: '/glade/u/home/sturbeville/scream/components/eam/bld/build-namelist -infile /glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_aa_default/case_scripts/Buildconf/eamconf/cesm_namelist -csmdata /glade/work/sturbeville/E3SM/inputdata -ignore_ic_year -use_case 2010_scream_hr -inputdata /glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_aa_default/case_scripts/Buildconf/eam.input_data_list -ntasks 1024.0 -namelist " &atmexp dtime=100 /" ' failed with error 'ERROR: unknown parameter name: cldera_passive_trcs' from dir '/glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_aa_default/case_scripts/Buildconf/eamconf'
+Building case in directory /glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_aa_default/case_scripts
+sharedlib_only is False
+model_only is False
+File /glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_aa_default/case_scripts/LockedFiles/env_mach_pes.xml has been modified
+  found difference in NTASKS : case 1024 locked 512
+  found difference in NTASKS_PER_INST : case 1024 locked 512
+ERROR: Invoke case.setup --reset 
+
+env_batch.xml appears to have changed, regenerating batch scripts
+manual edits to these file will be lost!
+
+Creating batch scripts
+Writing case.run script from input template /glade/u/home/sturbeville/scream/cime_config/machines/template.case.run
+Creating file .case.run
+Writing case.st_archive script from input template /glade/u/home/sturbeville/scream/cime_config/machines/template.st_archive
+Creating file case.st_archive
+File /glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_aa_default/case_scripts/LockedFiles/env_mach_pes.xml has been modified
+  found difference in NTASKS : case 1024 locked 512
+  found difference in NTASKS_PER_INST : case 1024 locked 512
+ERROR: Invoke case.setup --reset 

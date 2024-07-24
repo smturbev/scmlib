@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zDPSCREAM_SMALL_halfomega
+#PBS -N zL_aa_304ksst
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
@@ -29,7 +29,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename dpscream_small_half_omega #dpscream_rce_small_3km_aa_default
+  setenv casename dpscream_rce_large_3km_aa_304ksst #scream_dp_RCE_SMALL_3km_ec
 
   # Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
@@ -51,7 +51,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 
   # Name of queue for job submission
   setenv job_queue main
-  setenv job_priority economy
+  setenv job_priority economy # not used, hard-coded below
 
   # set email for error messages
   set email = smturbev@uw.edu
@@ -64,7 +64,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 
   # Set number of processors to use, should be less than or equal
   #   to the total number of elements in your domain.
-  set num_procs = 128 # 512
+  set num_procs = 1024
 
   # set walltime
   set walltime = '12:00:00'
@@ -78,12 +78,12 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   # (there are 3x3 unique columns per element, hence the "3" factor)
 
   # Set number of elements in the x&y directions
-  set num_ne_x = 12
-  set num_ne_y = 12
+  set num_ne_x = 512 #12
+  set num_ne_y = 32 #12
 
   # Set domain length [m] in x&y direction
-  set domain_size_x = 120000
-  set domain_size_y = 120000
+  set domain_size_x = 5120000 #120000
+  set domain_size_y = 320000 #120000
 
   # BELOW SETS RESOLUTION DEPENDENT SETTINGS
   # (Note that all default values below are appropriate for dx=dy=3.33 km and do not
@@ -138,10 +138,10 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set do_turnoff_lwrad = .false. # Turn off LW calculation
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
-  set stop_option = ndays
+  set stop_option = nhours
   set stop_n = 1
-  set iop_file = RCE_iopfile_4scam_half-smooth-mean-ascent.nc #IOP file name
-  set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
+  set iop_file = RCE_iopfile_4scam_no-mean-ascent_304K.nc #IOP file name
+  set sst_val = 304 # set constant SST value (ONLY valid for RCE case)
   set p3_new_icenuc = .false. # Turn off new ice nucleation scheme in P3
 # End Case specific stuff here
 
@@ -181,7 +181,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   ./xmlchange --id RUNDIR --val "${case_run_dir}"
   ./xmlchange --id DIN_LOC_ROOT --val "${inputdata_dir}"
   ./xmlchange --id JOB_QUEUE --val "${job_queue}"
-  ./xmlchange --id JOB_PRIORITY --val "${job_priority}"
+  ./xmlchange --id JOB_PRIORITY --val "economy"
 
 # Set to debug, only on certain machines
   if ($debug_queue == 'true') then
@@ -247,10 +247,11 @@ cat <<EOF >> user_nl_eam
  dep_scaling_small = 1.0
  sed_scaling_small = 1.0
  scale_all_ice = .false.
-fexcl1='BRUNT','FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','UU','VQ','VT','VU','VV','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECC','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
+fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','UU','VQ','VT','VU','VV','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3','BRUNT','ICEFRAC','LANDFRAC','OCNFRAC','SHOC_MIX','SHOC_QL','SNOWHICE','SNOWHLND','TDIFF','
+fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECC','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
  fincl1='OMEGA','DYN_OMEGA','QRL','QRS','CLDICE','WSUB'
  mfilt = 5000, 5000
- nhtfrq = -3, -1
+ nhtfrq = -6, -1
  avgflag_pertape='I','I'
  scmlat = $lat
  scmlon = $lon

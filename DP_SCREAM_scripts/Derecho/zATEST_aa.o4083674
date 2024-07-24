@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/glade/u/home/sturbeville/scream/cime/scripts/./create_newcase", line 18, in <module>
+    _main_func()
+  File "/glade/u/home/sturbeville/scream/cime/CIME/scripts/create_newcase.py", line 385, in _main_func
+    ) = parse_command_line(sys.argv, cimeroot, description)
+  File "/glade/u/home/sturbeville/scream/cime/CIME/scripts/create_newcase.py", line 33, in parse_command_line
+    config = Config.load(customize_path)
+  File "/glade/u/home/sturbeville/scream/cime/CIME/config.py", line 224, in load
+    customize_module_spec = importlib.machinery.ModuleSpec("cime_customize", None)
+AttributeError: module 'importlib' has no attribute 'machinery'
+/glade/derecho/scratch/sturbeville/DPSCREAM_simulations/ATEST_aa/case_scripts: No such file or directory.

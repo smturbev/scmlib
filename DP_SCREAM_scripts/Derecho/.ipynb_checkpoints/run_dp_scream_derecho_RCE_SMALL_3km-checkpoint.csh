@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zDPSCREAM_SMALL_halfomega
+#PBS -N BTEST_ab
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
@@ -29,7 +29,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename dpscream_small_half_omega #dpscream_rce_small_3km_aa_default
+  setenv casename BTEST_ab #dpscream_rce_small_3km_aa_default
 
   # Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
@@ -140,7 +140,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
   set stop_n = 1
-  set iop_file = RCE_iopfile_4scam_half-smooth-mean-ascent.nc #IOP file name
+  set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
   set p3_new_icenuc = .false. # Turn off new ice nucleation scheme in P3
 # End Case specific stuff here
@@ -181,7 +181,6 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   ./xmlchange --id RUNDIR --val "${case_run_dir}"
   ./xmlchange --id DIN_LOC_ROOT --val "${inputdata_dir}"
   ./xmlchange --id JOB_QUEUE --val "${job_queue}"
-  ./xmlchange --id JOB_PRIORITY --val "${job_priority}"
 
 # Set to debug, only on certain machines
   if ($debug_queue == 'true') then
@@ -204,7 +203,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   end
 
 # CAM configure options.  Set to SCREAM default settings.
-  set CAM_CONFIG_OPTS="-phys default -scam -dpcrm_mode -nlev 128 -shoc_sgs -microphys p3 -rad rrtmgp -chem spa -cldera_passive_trcs"
+  set CAM_CONFIG_OPTS="-phys default -scam -dpcrm_mode -nlev 128 -shoc_sgs -microphys p3 -rad rrtmgp -chem spa"
 
   ./xmlchange CAM_CONFIG_OPTS="$CAM_CONFIG_OPTS"
   ./xmlchange --id CAM_CONFIG_OPTS --append --val='-rce -aquaplanet'
@@ -247,10 +246,10 @@ cat <<EOF >> user_nl_eam
  dep_scaling_small = 1.0
  sed_scaling_small = 1.0
  scale_all_ice = .false.
-fexcl1='BRUNT','FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','UU','VQ','VT','VU','VV','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECC','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
+fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','UU','VQ','VT','VU','VV','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECC','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
  fincl1='OMEGA','DYN_OMEGA','QRL','QRS','CLDICE','WSUB'
  mfilt = 5000, 5000
- nhtfrq = -3, -1
+ nhtfrq = -6, -1
  avgflag_pertape='I','I'
  scmlat = $lat
  scmlon = $lon

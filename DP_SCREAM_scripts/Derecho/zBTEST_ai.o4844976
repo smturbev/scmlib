@@ -1,0 +1,8 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) ncarenv/23.09
+ERROR: Case directory /glade/derecho/scratch/sturbeville/DPSCREAM_simulations/BTEST_ai/case_scripts already exists
+For your changes to take effect, run:
+./case.build --clean-all
+./case.build
