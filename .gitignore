@@ -6,4 +6,10 @@ DP_diagnostics/notebooks/plots/.ipynb_checkpoints
 DP_diagnostics/notebooks/__pycache__/
 DP_diagnostics/notebooks/plots/old/
 DP_diagnostics/notebooks/pproc/.ipynb_checkpoints/
+DP_diagnostics/notebooks/plots/movie/
+DP_diagnostics/notebooks/plots/large/.ipynb_checkpoints/
+DP_diagnostics/notebooks/plots/small/.ipynb_checkpoints/
+DP_diagnostics/notebooks/large_domain/z*
+DP_diagnostics/notebooks/large_domain/.ipynb_checkpoints/
+DP_diagnostics/notebooks/small_domain/.ipynb_checkpoints/
 

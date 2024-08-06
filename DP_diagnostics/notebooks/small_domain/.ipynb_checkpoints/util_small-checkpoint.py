@@ -31,10 +31,14 @@ def get_comp_names(comp_name):
         runs = ["f_default","g_halfdep","g_2xdep","h_halfdep_all", "h_2xdep_all", "i_lsascent_a"]
         run_names = ["Default","1/2x dep (small)","2x dep (small)","1/2x dep (all)", "2x dep (all)", "LS ascent"]
         colors = ["darkred","lightskyblue","mediumblue","lightgreen","darkgreen", "darkviolet"]
-    elif comp_name=="other":
-        runs = ["f_default", "newnuc", "i_lsascent_a"] # "c_lp2005"
-        run_names = ["Default","ice nuc", "LS ascent"]
-        colors = ["darkred","lightcoral", "darkviolet"]
+    elif comp_name=="lsascent":
+        runs = ["f_default", "i_lsascent_a", "i_halfomega"] # "c_lp2005"
+        run_names = ["Default", "LS ascent", "Half ascent"]
+        colors = ["darkred","darkviolet", "mediumvioletred"]
+    elif comp_name=="nuc":
+        runs = ["f_default",  "lpfrz_ac", "cimoh_lp_nohet"] # "c_lp2005"
+        run_names = ["Default","LP2005", "LP + Ci Moh"]
+        colors = ["darkred","lightcoral","darkorange"]
     elif comp_name=="sst":
         runs = ["f_default","j_304K","j_296K"]
         run_names = ["Default (300K)","Warm SST (304K)","Cool SST (296K)"]
@@ -76,11 +80,12 @@ def w2omega(w, p, t):
 
 def calc_rice(qi, ni):
     rho = 920  # kg/m3
-    qi = qi  # kg/kg
-    ni = ni  # 1/kg
-    r_ice = np.where((ni>1e-5),(3*qi/(4*np.pi*rho*ni))**(1/3),0)*1e6  # um
+    # qi = qi  # kg/kg
+    # ni = ni  # 1/kg
+    # r_ice = np.where((ni>1e-5),(3*qi/(4*np.pi*rho*ni))**(1/3),0)*1e6  # um
+    r_ice = (3*qi/(4*np.pi*rho*ni.where(ni>1e-5)))**(1/3) 
+    r_ice = r_ice * 1e6  # um
     return r_ice
-
 
 def calc_ni(numice, qv, p, t):
     ni = numice * calc_rho(qv,p,t)  # 1/kg * kg/m3 = 1/m3

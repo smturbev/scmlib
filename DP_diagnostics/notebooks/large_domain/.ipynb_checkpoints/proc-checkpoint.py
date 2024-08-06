@@ -11,7 +11,7 @@ import xarray as xr
 # from scipy import stats
 
 
-def save_crh_percentiles(run_file, ndays=5):
+def save_crh_percentiles(run_file, ndays=5, save2d=False):
     """ Returns the column humidity percentiles using TMQ
         (precipitable water or column-integrated water vapor).
     Inputs:
@@ -20,32 +20,62 @@ def save_crh_percentiles(run_file, ndays=5):
         - None, saves the TMQ_percentiles in a new file in 
             same directory as given file
     """
-    var="IWC"
     chunks={'lev':64,'ncol':2000}
-    bins = np.arange(0,1.01,0.05)
-    bin_mids = (bins[1:]+bins[:-1])/2
+    bin_edges = np.arange(0,101,5)
+    bin_mids = (bin_edges[1:]+bin_edges[:-1])/2
 
-    ds = xr.open_dataset(run_file, chunks=chunks).isel(time=slice(-ndays*4,-1))
-    ds = ds[var]
-    file2d = run_file.replace("h0","h1")
-    crh = xr.open_dataset(file2d)["TMQ"].sel(time=ds.time)
-    crh_perc_bins = crh.quantile(bins).values
+    ds = xr.open_dataset(run_file, chunks=chunks).isel(time=slice(-ndays*4,-1))[["TMQ"]]
+    ds_time = ds.TMQ.time
+    ds_dims = ds.TMQ.dims
+    ds_coords = ds.TMQ.coords
+
+    crh = ds["TMQ"].chunk(dict(ncol=-1))
+
+    del ds
+
+    crh_perc_bins = crh.quantile(bin_edges/100).values[1:-1]
     crh_percs = np.zeros(crh.shape)
-    for i in range(len(bins)-1):
-        print(i, bin_mids[i], crh_perc_bins[i], crh_perc_bins[i+1])
-        crh_percs = np.where((crh>=crh_perc_bins[i]) & (crh<crh_perc_bins[i+1]),
-                             bin_mids[i], crh_percs)
-    crh_percs = np.repeat(crh_percs[:,np.newaxis,:], 128, axis=1)
-    print("tmq_percs shape vs 3d shape", crh_percs.shape, ds.shape)
-    crh_percs = xr.DataArray(crh_percs, dims=ds.dims, coords=ds.coords,
-                             attrs={"name":"column-integrated water vapor percentiles"})
-    crh_percs = xr.Dataset({"TMQ_percs":crh_percs}, attrs=crh_percs.attrs)
-    run_dir, file_name = run_file.split(run_file.split("/")[-1])
-    crh_percs.to_netcdf(run_dir+file_name.split(".eam")[0]+"TMQ_percs.nc")
-    print("saved as "+run_dir+file_name.split(".eam")[0]+"TMQ_percs.nc")
-    return
 
-def cat_var_binned_by_crh(var, run_dir, file_base_name, new_file_name=None):
+    crh_percs = np.where((crh<crh_perc_bins[0]),
+                         bin_mids[0], crh_percs)
+    print("crh < 5% i.e.,", bin_edges[0],"to", bin_edges[1],
+          "with a bin mid of", bin_mids[0], "less than", crh_perc_bins[0])
+    print("... ",(crh<crh_perc_bins[0]).sum().values)
+
+    for i in range(1,len(bin_edges)-2):
+        print(i, "crh is between", int(bin_edges[i]),"and", int(bin_edges[i+1]),
+              "with percentiles between", int(crh_perc_bins[i-1]), int(crh_perc_bins[i]),
+              "with a bin mid of", (bin_mids[i]))
+        crh_percs = np.where((crh>=crh_perc_bins[i-1]) & (crh<crh_perc_bins[i]),
+                             bin_mids[i], crh_percs)
+        print("... ", ((crh>=crh_perc_bins[i-1]) & (crh<crh_perc_bins[i])).sum().values)
+
+    crh_percs = np.where((crh>=crh_perc_bins[-1]),
+                             bin_mids[-1], crh_percs)
+    print("crh >= 95% i.e.,", bin_edges[-2],"to", bin_edges[-1],
+          "with a bin mid of", bin_mids[-1])
+    print("... ", (crh>=crh_perc_bins[-1]).sum().values)
+
+    if save2d:
+        crh_percs = xr.DataArray(crh_percs, dims=ds_dims, coords=ds_coords,
+                         attrs={"name":"column-integrated water vapor percentiles"})
+        savename="_2d"
+    else:
+        crh_percs = np.repeat(crh_percs[:,np.newaxis,:], 128, axis=1)
+        print("tmq_percs shape vs 3d shape", crh_percs.shape, ds_dims, ds_coords)
+        crh_percs = xr.DataArray(crh_percs, dims=ds_dims, coords=ds_coords,
+                                 attrs={"name":"column-integrated water vapor percentiles"})
+        savename=""
+    crh_percs = xr.Dataset({"TMQ_percs":crh_percs}, attrs=crh_percs.attrs)
+
+    base_name = run_file.split("/")[-1]
+    run_dir = run_file.split(base_name)[0]
+    save_name = run_dir+base_name.split(".eam")[0]+f"_TMQ_percs{savename}_newnewnew.nc"
+    print("saved as "+save_name)
+    crh_percs.to_netcdf(save_name)
+    return crh_percs
+
+def cat_var_binned_by_crh(var, run_dir, file_base_name, new_file_name=None, save2d=False):
     """ Returns a concatenauted file of the binned variable 
         in a single file with bin edges included.
 
@@ -59,13 +89,18 @@ def cat_var_binned_by_crh(var, run_dir, file_base_name, new_file_name=None):
     print('getting', var, 'from', run_dir+file_base_name+"_i.nc")
     bins = np.arange(0,101,5)
     new_var = np.zeros((len(bins)-1,128))
-    ds = xr.open_dataset(run_dir+file_base_name+"_0.nc")[var]
-    print(ds.shape)
+    # ds = xr.open_dataset(run_dir+file_base_name+"_0.nc")[var]
+    # print(ds.shape)
     for i in range(len(bins[:-1])):
-        print(i, bins[i])
-        new_var[i,:] = xr.open_dataset(run_dir+file_base_name+"_"+str(bins[i])+".nc")[var].isel(time=0).isel(x=0).isel(y=0).values
-    new_var = xr.DataArray(new_var, dims=['bins','lev'], 
-                           coords={'bins':((bins[1:]+bins[:-1])/2), 'lev':ds.lev})
+        file_name = run_dir+file_base_name+f"_{bins[i]:02d}.nc"
+        new_var[i,:] = xr.open_dataset(file_name)[var][0,0,0].values
+        print(i, bins[i], file_name, new_var[i,0])
+    if save2d:
+        new_var = xr.DataArray(new_var[:,0], dims=['bins'], 
+                               coords={'bins':((bins[1:]+bins[:-1])/2)})
+    else:
+        new_var = xr.DataArray(new_var, dims=['bins','lev'], 
+                               coords={'bins':((bins[1:]+bins[:-1])/2), 'lev':new_var.lev})
     new_ds = xr.Dataset({var:new_var}).assign_coords({"bin_edges":bins})
     if new_file_name is not None:
         new_ds.to_netcdf(run_dir+new_file_name+".nc")

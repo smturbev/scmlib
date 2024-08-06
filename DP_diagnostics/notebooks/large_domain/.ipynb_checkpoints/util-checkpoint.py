@@ -12,6 +12,18 @@ from scipy import stats
 R = 287.058
 G = 9.80665
 
+def get_run_color(run_name):
+    if run_name=="default":
+        return "dimgray"
+    elif run_name=="lsascent":
+        return "darkviolet"
+    elif run_name=="304ksst":
+        return "tab:red"
+    elif run_name=="lsascent304k":
+        return "tab:purple"
+    else:
+        return "lightblue"
+        
 
 def get_comp_names(comp_name):
     ''' Takes a string and returns the run codes, names, and colors'''
@@ -75,10 +87,12 @@ def w2omega(w, p, t):
 
 
 def calc_rice(qi, ni):
-    rho = 920  # kg/m3
-    qi = qi  # kg/kg
-    ni = ni  # 1/kg
-    r_ice = np.where((ni>1e-5),(3*qi/(4*np.pi*rho*ni))**(1/3),0)*1e6  # um
+    rho = 920.0  # kg/m3
+    # qi = qi  # kg/kg
+    # ni = ni  # 1/kg
+    # r_ice = np.where((ni>1e-5),(3*qi/(4*np.pi*rho*ni))**(1/3),0)*1e6  # um
+    r_ice = np.cbrt(3*qi/(4*np.pi*rho*ni))
+    r_ice = r_ice * 1e6  # um
     return r_ice
 
 
