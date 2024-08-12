@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zL_aa_lpfrz
+#PBS -N zL_aa_lpfrz_304ksst
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
@@ -29,7 +29,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename dpscream_rce_large_3km_aa_lpfrz #scream_dp_RCE_SMALL_3km_ec
+  setenv casename dpscream_rce_large_3km_aa_lpfrz304k
 
   # Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
@@ -140,8 +140,8 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = nhours
   set stop_n = 1
-  set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
-  set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
+  set iop_file = RCE_iopfile_4scam_no-mean-ascent_304K.nc #IOP file name
+  set sst_val = 304 # set constant SST value (ONLY valid for RCE case)
   set p3_new_icenuc = .true. # Turn off new ice nucleation scheme in P3
 # End Case specific stuff here
 
