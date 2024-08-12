@@ -20,9 +20,11 @@ def get_run_color(run_name):
     elif run_name=="304ksst":
         return "tab:red"
     elif run_name=="lsascent304k":
-        return "tab:purple"
-    else:
+        return "magenta"
+    elif run_name=="lpfrz":
         return "lightblue"
+    else:
+        return "tab:blue"
         
 
 def get_comp_names(comp_name):

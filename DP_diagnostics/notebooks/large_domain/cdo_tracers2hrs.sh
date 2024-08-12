@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N zTrac
+#PBS -N zTraclp
 #PBS -A UWAS0108
 #PBS -l walltime=00:15:00
 #PBS -q develop
@@ -11,27 +11,29 @@
 
 module load cdo
  
-run=aa_lsascent_304ksst
+run=aa_lpfrz
 run_dir=/glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_${run}/run/
 ds_file=$run_dir/dpscream_rce_large_3km_${run}.eam.h0.2000-01-01-00000.nc
 
-# cdo -fldmean -timmean -selvar,Z3 $ds_file $run_dir/dpscream_rce_large_3km_${run}_Z3_mean.nc
+cdo -seltimestep,-20/-1 $ds_file $run_dir/dpscream_rce_large_3km_${run}_h0_last5days.nc
 
-tracer=BCU
-tracer_file=$run_dir/dpscream_rce_large_3km_${run}_${tracer}_hrs.nc
-cdo -mulc,-1 -ln -selvar,$tracer $ds_file $tracer_file # -seltimestep,-20/-1 
+# cdo -fldmean -timmean -seltimestep,-20/-1 -selvar,Z3 $ds_file $run_dir/dpscream_rce_large_3km_${run}_Z3_mean.nc
 
-tracer=NUC
-tracer_file=$run_dir/dpscream_rce_large_3km_${run}_${tracer}_hrs.nc
-cdo -mulc,-1 -ln -selvar,$tracer $ds_file $tracer_file # -seltimestep,-20/-1
+# tracer=BCU
+# tracer_file=$run_dir/dpscream_rce_large_3km_${run}_${tracer}_hrs.nc
+# cdo -mulc,-1 -ln -selvar,$tracer $ds_file $tracer_file # -seltimestep,-20/-1 
 
-tracer=W_NUC
-tracer_file=$run_dir/dpscream_rce_large_3km_${run}_${tracer}_hrs.nc
-cdo -setname,$tracer -div -selvar,$tracer $ds_file -selvar,NUC $ds_file $tracer_file
+# tracer=NUC
+# tracer_file=$run_dir/dpscream_rce_large_3km_${run}_${tracer}_hrs.nc
+# cdo -mulc,-1 -ln -selvar,$tracer $ds_file $tracer_file # -seltimestep,-20/-1
 
-tracer=NI_NUC
-tracer_file=$run_dir/dpscream_rce_large_3km_${run}_${tracer}_hrs.nc
-cdo -setname,$tracer -div -selvar,$tracer $ds_file -selvar,NUC $ds_file $tracer_file
+# tracer=W_NUC
+# tracer_file=$run_dir/dpscream_rce_large_3km_${run}_${tracer}_hrs.nc
+# cdo -setname,$tracer -div -selvar,$tracer $ds_file -selvar,NUC $ds_file $tracer_file
+
+# tracer=NI_NUC
+# tracer_file=$run_dir/dpscream_rce_large_3km_${run}_${tracer}_hrs.nc
+# cdo -setname,$tracer -div -selvar,$tracer $ds_file -selvar,NUC $ds_file $tracer_file
 
 
 echo "done"
