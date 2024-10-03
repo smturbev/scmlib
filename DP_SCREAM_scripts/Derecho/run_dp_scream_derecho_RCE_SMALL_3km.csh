@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zDPSCREAM_SMALL_cimoh_lp_nohet
+#PBS -N zDPSCREAM_SMALL_test
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
@@ -29,7 +29,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename scream_dp_RCE_SMALL_3km_cimoh_lp_nohet #dpscream_rce_small_3km_aa_default
+  setenv casename scream_dp_RCE_SMALL_3km_test #dpscream_rce_small_3km_aa_default
 
   # Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
@@ -305,6 +305,8 @@ EOF
 
 # Modify the run start and duration parameters for the desired case
   ./xmlchange RUN_STARTDATE="$startdate",START_TOD="$start_in_sec",STOP_OPTION="$stop_option",STOP_N="$stop_n"
+# For a branched run, input the reference directory here
+  # ./xmlchange RUN_TYPE="branch",RUN_REFCASE="$casedirectory/scream_dp_RCE_SMALL_3km_lpfrz_aa/run/",RUN_REFDATE="2000-01-11-00000"
 
 # Compute number of columns needed for component model initialization
   set comp_mods_nx = `expr $num_ne_x \* $num_ne_y \* 9`
