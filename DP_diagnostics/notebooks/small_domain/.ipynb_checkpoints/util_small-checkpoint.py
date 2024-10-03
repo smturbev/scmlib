@@ -36,9 +36,9 @@ def get_comp_names(comp_name):
         run_names = ["Default", "LS ascent", "Half ascent"]
         colors = ["darkred","darkviolet", "mediumvioletred"]
     elif comp_name=="nuc":
-        runs = ["f_default",  "lpfrz_ac", "cimoh_lp_nohet"] # "c_lp2005"
-        run_names = ["Default","LP2005", "LP + Ci Moh"]
-        colors = ["darkred","lightcoral","darkorange"]
+        runs = ["f_default",  "lpfrz_ac"]  # , "cimoh_lp_nohet", "i_bgicenuc"] # "c_lp2005"
+        run_names = ["Default","LP2005"]  # , "LP + Ci Moh", "LP+ci"]
+        colors = ["darkred","lightcoral"]  # ,"darkorange","magenta"]
     elif comp_name=="sst":
         runs = ["f_default","j_304K","j_296K"]
         run_names = ["Default (300K)","Warm SST (304K)","Cool SST (296K)"]
@@ -83,7 +83,7 @@ def calc_rice(qi, ni):
     # qi = qi  # kg/kg
     # ni = ni  # 1/kg
     # r_ice = np.where((ni>1e-5),(3*qi/(4*np.pi*rho*ni))**(1/3),0)*1e6  # um
-    r_ice = (3*qi/(4*np.pi*rho*ni.where(ni>1e-5)))**(1/3) 
+    r_ice = (3*qi/(4*np.pi*rho*ni.where(ni>1e-5)))**(1/3)
     r_ice = r_ice * 1e6  # um
     return r_ice
 

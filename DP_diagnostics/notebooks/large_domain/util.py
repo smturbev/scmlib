@@ -109,6 +109,12 @@ def calc_rho(qv, p, t):
     rho = p / (R*Tv)  # kg/m3
     return rho
 
+def calc_theta(t):
+    """calculates the potential temperature, theta, of air
+       from the temperature xarray
+    """
+    theta = t * ((1000/t.lev)**(0.286))
+    return theta
 
 def calc_rhice(ds, varQ="Q", varT="T", z_units="hPa"):
     """ input: xarray with variables Q and T
