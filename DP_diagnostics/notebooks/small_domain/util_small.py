@@ -114,6 +114,55 @@ def calc_rhice(ds, varQ="Q", varT="T", z_units="hPa"):
     rh_ice = w_i/w_si * 100
     return rh_ice
 
+def plot_microhist(x_array, y_array, savename=None):
+    """ plots the x vs y joint histogram (normalized pdf)
+
+        Input: 
+            x_array - Rice in um
+            y_array - ICNC in 1/kg
+            savemane - optional
+        Output: 
+            ax - figure axis
+            saves figure as savename if specified
+    """
+    print(x_array.shape, y_array.shape)
+    print("flattening...")
+    x_array = x_array.values.flatten()
+    y_array = y_array.values.flatten()/1e6  # convert to cm-3
+    print(x_array.shape, y_array.shape)
+    n = len(x_array)
+    x_array = x_array[~np.isnan(y_array)]
+    y_array = y_array[~np.isnan(y_array)]
+    print(x_array.shape, y_array.shape)
+    print(n)
+    xbins=np.linspace(0,100,100)
+    ybins=np.logspace(-5,2,70)
+    
+    hist, xbins, ybins, _ = stats.binned_statistic_2d(x_array, y_array, None,
+                                                  statistic="count", bins=[xbins,ybins])
+    hist = np.where(hist>0,hist,np.nan)
+    hist = hist/n
+    print(np.nansum(hist),"counts...",end="")
+    xbins = (xbins[1:]+xbins[:-1])/2
+    ybins = (ybins[1:]+ybins[:-1])/2
+    
+    print("plotting... ", end="")
+    fig, ax = plt.subplots(1, 1, figsize=(6,6), constrained_layout=True)
+    cf = ax.pcolormesh(xbins, ybins, (hist*100).T, cmap="magma_r", 
+                      shading='auto',
+                      # vmin = 0, vmax=0.2  #0.02, 0.3 std
+                     )
+    ax.set(yscale="log", xlabel="R$_{ice} (\mu$m)", 
+       title=f"{savename} T<-40$^\circ$C",
+       xlim=[0,100],ylim=[5e-5,10])
+    ax.set_ylabel("ICNC (#/cm$^3$)")
+    plt.colorbar(cf, ax=ax, label="%", location="bottom", shrink=0.8)
+    if savename is not None:
+        plt.savefig(f"../plots/small/micro_hist_run_{savename}.pdf")
+    plt.show()
+    print("done")
+    return ax
+
 
 def dennisplot(stat, olr, alb, var=None, xbins=None, ybins=None,
                levels=None, model="model", region="TWP", var_name=None, units="units",
