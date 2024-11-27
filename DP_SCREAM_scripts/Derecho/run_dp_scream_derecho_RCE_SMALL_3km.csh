@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zDPSCREAM_SMALL_test
+#PBS -N zDPSCREAM_SMALL_test_bcu_aa
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
@@ -29,9 +29,10 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename scream_dp_RCE_SMALL_3km_test #dpscream_rce_small_3km_aa_default
-
-  # Set the case directory here
+  setenv casename scream_dp_RCE_SMALL_3km_test_bcu_aa #dpscream_rce_small_3km_aa_default
+  set branch_case="scream_dp_RCE_SMALL_3km_"
+  
+# Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
 
   # Directory where inputdata lives
@@ -139,10 +140,10 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
-  set stop_n = 20
-  set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
+  set stop_n = 3
+  set iop_file = RCE_iopfile_4scam_no-mean-ascentqmoistx1.2.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
-  set p3_new_icenuc = .true. # Turn off new ice nucleation scheme in P3
+  set p3_new_icenuc = .false. # Turn off new ice nucleation scheme in P3
 # End Case specific stuff here
 
   # Location of IOP file
@@ -250,7 +251,7 @@ cat <<EOF >> user_nl_eam
 fexcl1='BRUNT','FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','UU','VQ','VT','VU','VV','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3' fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECC','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
  fincl1='OMEGA','DYN_OMEGA','QRL','QRS','CLDICE','WSUB'
  mfilt = 5000, 5000
- nhtfrq = -3, -1
+ nhtfrq = -6, -6
  avgflag_pertape='I','I'
  scmlat = $lat
  scmlon = $lon
@@ -304,9 +305,9 @@ EOF
 
 
 # Modify the run start and duration parameters for the desired case
-  ./xmlchange RUN_STARTDATE="$startdate",START_TOD="$start_in_sec",STOP_OPTION="$stop_option",STOP_N="$stop_n"
+ ./xmlchange RUN_STARTDATE="$startdate",START_TOD="$start_in_sec",STOP_OPTION="$stop_option",STOP_N="$stop_n"
 # For a branched run, input the reference directory here
-  # ./xmlchange RUN_TYPE="branch",RUN_REFCASE="$casedirectory/scream_dp_RCE_SMALL_3km_lpfrz_aa/run/",RUN_REFDATE="2000-01-11-00000"
+ # ./xmlchange RUN_TYPE="branch",RUN_REFCASE=$branch_case,RUN_REFDATE="2000-01-06",RUN_REFDIR="/glade/derecho/scratch/sturbeville/DPSCREAM_simulations/${branch_case}/run/"
 
 # Compute number of columns needed for component model initialization
   set comp_mods_nx = `expr $num_ne_x \* $num_ne_y \* 9`
