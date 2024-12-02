@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zL_branch_def304_aa
+#PBS -N zL_branch_lpfrz304k
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
@@ -29,10 +29,10 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename dpscream_rce_large_3km_default304K_branch
+  setenv casename dpscream_rce_large_3km_lpfrz304k_branch
   
   # Set the case name of the branch here if applicable
-  set branch_case = dpscream_rce_large_3km_aa_304ksst
+  set branch_case = dpscream_rce_large_3km_aa_lpfrz304k
   set branch_date = "2000-02-20"
 
   # Set the case directory here
@@ -146,7 +146,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set stop_n = 5
   set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
   set sst_val = 304 # set constant SST value (ONLY valid for RCE case)
-  set p3_new_icenuc = .false. # Turn off new ice nucleation scheme in P3
+  set p3_new_icenuc = .true. # Turn off new ice nucleation scheme in P3
 # End Case specific stuff here
 
   # Location of IOP file
@@ -244,7 +244,7 @@ cat <<EOF >> user_nl_eam
  iop_nudge_tq = $do_iop_nudge_tq
  iop_nudge_uv = $do_iop_nudge_uv
  history_aerosol = .false.
- micro_tend_output = .false.
+ micro_tend_output = .true.
  theta_hydrostatic_mode = .false.
  tstep_type = 9
  do_new_bg_lp_frz = $p3_new_icenuc
@@ -255,7 +255,7 @@ fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','UU','VQ','VT',
 fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECC','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
  fincl1='OMEGA','DYN_OMEGA','QRL','QRS','CLDICE','WSUB'
  mfilt = 5000, 5000
- nhtfrq = -6, -1
+ nhtfrq = -6, -3
  avgflag_pertape='I','I'
  scmlat = $lat
  scmlon = $lon
@@ -307,9 +307,6 @@ cat <<EOF>> user_nl_cpl
   ocn_surface_flux_scheme = 2
 EOF
 
-
-# Modify the run start and duration parameters for the desired case
-  # ./xmlchange RUN_STARTDATE="$startdate",START_TOD="$start_in_sec",STOP_OPTION="$stop_option",STOP_N="$stop_n"
 # For a branched run, input the reference directory here
  ./xmlchange RUN_TYPE="branch",STOP_OPTION="$stop_option",STOP_N="$stop_n",RUN_REFCASE=$branch_case,RUN_REFDATE=$branch_date,RUN_REFDIR="/glade/derecho/scratch/sturbeville/DPSCREAM_simulations/${branch_case}/run/",GET_REFCASE="FALSE"
 
@@ -336,6 +333,12 @@ EOF
 # Write restart files at the end of model simulation
   ./xmlchange PIO_TYPENAME="pnetcdf"
   ./xmlchange REST_OPTION="end"
+
+# copy over restart files for branch case
+cd $case_run_dir
+cp ../../$branch_case/run/*${branch_date}* ./
+cp ../../$branch_case/run/rpointer* ./
+cd $temp_case_scripts_dir
 
 # Build the case
   ./case.build
