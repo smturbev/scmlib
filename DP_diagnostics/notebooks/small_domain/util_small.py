@@ -36,9 +36,9 @@ def get_comp_names(comp_name):
         run_names = ["Default", "LS ascent", "Half ascent"]
         colors = ["darkred","darkviolet", "mediumvioletred"]
     elif comp_name=="nuc":
-        runs = ["f_default",  "lpfrz_ac"]  # , "cimoh_lp_nohet", "i_bgicenuc"] # "c_lp2005"
-        run_names = ["Default","LP2005"]  # , "LP + Ci Moh", "LP+ci"]
-        colors = ["darkred","lightcoral"]  # ,"darkorange","magenta"]
+        runs = ["lpfrz_ac", "cimoh_lp_nohet"]  # , "i_bgicenuc"] # "c_lp2005"
+        run_names = ["LP2005", "Ci Mohler"]  # , "LP + Ci Moh", "LP+ci"]
+        colors = ["darkred","lightcoral", "magenta"]  # ,"darkorange","magenta"]
     elif comp_name=="sst":
         runs = ["f_default","j_304K","j_296K"]
         run_names = ["Default (300K)","Warm SST (304K)","Cool SST (296K)"]

@@ -14,15 +14,17 @@ G = 9.80665
 
 def get_run_color(run_name):
     if run_name=="default":
-        return "dimgray"
+        return "C1"
     elif run_name=="lsascent":
-        return "darkviolet"
+        return "magenta"
     elif run_name=="304ksst":
-        return "tab:red"
+        return "C1"
     elif run_name=="lsascent304k":
         return "magenta"
     elif run_name=="lpfrz":
         return "lightblue"
+    elif run_name=="lpls":
+        return "gold"
     else:
         return "tab:blue"
         

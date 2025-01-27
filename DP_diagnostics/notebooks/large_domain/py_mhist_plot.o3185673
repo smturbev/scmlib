@@ -1,0 +1,35 @@
+/glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_default304k_branch/run/dpscream_rce_large_3km_default304k_branch_h0_last5days
+Traceback (most recent call last):
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/site-packages/xarray/backends/file_manager.py", line 209, in _acquire_with_cache_info
+    file = self._cache[self._key]
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/site-packages/xarray/backends/lru_cache.py", line 55, in __getitem__
+    value = self._cache[key]
+KeyError: [<class 'netCDF4._netCDF4.Dataset'>, ('/glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_default304k_branch/run/dpscream_rce_large_3km_default304k_branch_h0_last5days',), 'r', (('clobber', True), ('diskless', False), ('format', 'NETCDF4'), ('persist', False)), '5e4c8a3d-3cdd-41af-baaf-0fec9b3f31bd']
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/glade/u/home/sturbeville/scmlib/DP_diagnostics/notebooks/large_domain/plot_mhist.py", line 27, in <module>
+    ds = xr.open_dataset(file, chunks=chunks, engine="netcdf4")[["T","CLDICE","NUMICE","Q"]]
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/site-packages/xarray/backends/api.py", line 541, in open_dataset
+    backend_ds = backend.open_dataset(
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/site-packages/xarray/backends/netCDF4_.py", line 578, in open_dataset
+    store = NetCDF4DataStore.open(
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/site-packages/xarray/backends/netCDF4_.py", line 382, in open
+    return cls(manager, group=group, mode=mode, lock=lock, autoclose=autoclose)
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/site-packages/xarray/backends/netCDF4_.py", line 329, in __init__
+    self.format = self.ds.data_model
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/site-packages/xarray/backends/netCDF4_.py", line 391, in ds
+    return self._acquire()
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/site-packages/xarray/backends/netCDF4_.py", line 385, in _acquire
+    with self._manager.acquire_context(needs_lock) as root:
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/contextlib.py", line 119, in __enter__
+    return next(self.gen)
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/site-packages/xarray/backends/file_manager.py", line 197, in acquire_context
+    file, cached = self._acquire_with_cache_info(needs_lock)
+  File "/glade/u/apps/opt/conda/envs/npl-2023a/lib/python3.9/site-packages/xarray/backends/file_manager.py", line 215, in _acquire_with_cache_info
+    file = self._opener(*self._args, **kwargs)
+  File "src/netCDF4/_netCDF4.pyx", line 2463, in netCDF4._netCDF4.Dataset.__init__
+  File "src/netCDF4/_netCDF4.pyx", line 2026, in netCDF4._netCDF4._ensure_nc_success
+FileNotFoundError: [Errno 2] No such file or directory: b'/glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_default304k_branch/run/dpscream_rce_large_3km_default304k_branch_h0_last5days'
+done
