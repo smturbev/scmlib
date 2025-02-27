@@ -101,7 +101,8 @@ def calc_rice(qi, ni):
 
 
 def calc_ni(numice, qv, p, t):
-    ni = numice * calc_rho(qv,p,t)  # 1/kg * kg/m3 = 1/m3
+    """returns icnc as 1/cm3"""
+    ni = numice * calc_rho(qv,p,t)/1e6  # 1/kg * kg/m3 = 1/m3
     return ni
 
 
