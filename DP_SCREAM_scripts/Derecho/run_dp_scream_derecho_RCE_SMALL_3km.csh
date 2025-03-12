@@ -29,8 +29,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename scream_dp_RCE_SMALL_3km_test_bcu_aa #dpscream_rce_small_3km_aa_default
-  set branch_case="scream_dp_RCE_SMALL_3km_"
+  setenv casename scream_dp_RCE_SMALL_v0 #dpscream_rce_small_3km_aa_default
   
 # Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
@@ -140,8 +139,8 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
-  set stop_n = 3
-  set iop_file = RCE_iopfile_4scam_no-mean-ascentqmoistx1.2.nc #IOP file name
+  set stop_n = 5
+  set iop_file = RCE_iopfile_4scam_no-mean_ascent.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
   set p3_new_icenuc = .false. # Turn off new ice nucleation scheme in P3
 # End Case specific stuff here
