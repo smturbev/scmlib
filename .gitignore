@@ -13,4 +13,10 @@ DP_diagnostics/notebooks/plots/small/.ipynb_checkpoints/
 DP_diagnostics/notebooks/large_domain/z*
 DP_diagnostics/notebooks/large_domain/.ipynb_checkpoints/
 DP_diagnostics/notebooks/small_domain/.ipynb_checkpoints/
+DP_diagnostics/notebooks/stats/
+DP_diagnostics/notebooks/large_domain/*.nc
+DP_diagnostics/notebooks/plots/ams25/.ipynb_checkpoints/
+DP_diagnostics/notebooks/large_domain/__pycache__/
+DP_diagnostics/notebooks/large_domain/.ipynb_checkpoints
+
 
