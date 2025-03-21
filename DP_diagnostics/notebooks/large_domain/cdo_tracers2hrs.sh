@@ -11,7 +11,7 @@
 
 module load cdo
  
-run=d_lpls304k_wbranch
+run=d_default304k_wbranch
 run_dir=/glade/derecho/scratch/sturbeville/DPSCREAM_simulations/dpscream_rce_large_3km_${run}/run/
 ds_file=$run_dir/dpscream_rce_large_3km_${run}.eam.h0.2000-02-20-10800.nc
 ds5day_file=$run_dir/dpscream_rce_large_3km_${run}_h0_last5days.nc
