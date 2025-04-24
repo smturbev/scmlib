@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zL_aa_lpls304k
+#PBS -N zL_no_max_yesicnclims
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
@@ -29,7 +29,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename dpscream_rce_large_3km_lpls304k
+  setenv casename dpscream_rce_large_3km_lpls300k_nomax_yesicnclims
 
   # Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
@@ -139,10 +139,11 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
-  set stop_n = 10
-  set iop_file = RCE_iopfile_4scam_smooth-mean-ascent_304ksst.nc #IOP file name
-  set sst_val = 304 # set constant SST value (ONLY valid for RCE case)
+  set stop_n = 2
+  set iop_file = RCE_iopfile_4scam_smooth_w_profile.nc #IOP file name
+  set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
   set p3_new_icenuc = .true. # Turn off new ice nucleation scheme in P3
+  set no_icnc_limits = .false. # Turn off default ice nucleation limits on ice concentrations
 # End Case specific stuff here
 
   # Location of IOP file
@@ -244,6 +245,7 @@ cat <<EOF >> user_nl_eam
  theta_hydrostatic_mode = .false.
  tstep_type = 9
  do_new_bg_lp_frz = $p3_new_icenuc
+ no_icnc_limits = $no_icnc_limits
  dep_scaling_small = 1.0
  sed_scaling_small = 1.0
  scale_all_ice = .false.

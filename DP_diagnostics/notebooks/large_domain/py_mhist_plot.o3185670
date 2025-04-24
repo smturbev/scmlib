@@ -1,5 +1,0 @@
-  File "/glade/u/home/sturbeville/scmlib/DP_diagnostics/notebooks/large_domain/run_pyscript.sh", line 12
-    export TMPDIR=${SCRATCH}/temp
-           ^
-SyntaxError: invalid syntax
-done
