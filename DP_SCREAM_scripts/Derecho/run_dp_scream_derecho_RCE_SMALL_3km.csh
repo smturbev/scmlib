@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zDPSCREAM_SMALL_test_bcu_aa
+#PBS -N zDPSCREAM_SMALL_test_nuc
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
@@ -29,7 +29,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename scream_dp_RCE_SMALL_v0 #dpscream_rce_small_3km_aa_default
+  setenv casename dpscreamv0_RCE_SMALL.cooper.P3_hom_debug
   
 # Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
@@ -51,7 +51,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 
   # Name of queue for job submission
   setenv job_queue main
-  setenv job_priority economy
+  setenv job_priority regular
 
   # set email for error messages
   set email = smturbev@uw.edu
@@ -67,7 +67,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set num_procs = 128 # 512
 
   # set walltime
-  set walltime = '12:00:00'
+  set walltime = '04:00:00'
 
   ## SET DOMAIN SIZE AND RESOLUTION:
   # - Note that these scripts are set to run with dx=dy=3.33 km
@@ -140,9 +140,9 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
   set stop_n = 5
-  set iop_file = RCE_iopfile_4scam_no-mean_ascent.nc #IOP file name
+  set iop_file = RCE_iopfile_4scam_no-mean-ascentqmoistx1.2.nc #RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
   set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
-  set p3_new_icenuc = .false. # Turn off new ice nucleation scheme in P3
+  set p3_new_icenuc = .false. # Turn on/off new ice nucleation scheme in P3
 # End Case specific stuff here
 
   # Location of IOP file
@@ -172,8 +172,13 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 
 # Create new case
   ./create_newcase -case $casename --script-root $temp_case_scripts_dir -mach $machine -project $PROJECT -compset $compset -res $grid
-  cd $temp_case_scripts_dir
 
+  # copy this run script to the case dir for provence
+  set this_script_name = 'basename $0'
+  cp ${this_script_name} ${case_scripts_dir}
+
+  cd $temp_case_scripts_dir
+  
   ./xmlchange JOB_WALLCLOCK_TIME=$walltime
 
 # Define executable and run directories

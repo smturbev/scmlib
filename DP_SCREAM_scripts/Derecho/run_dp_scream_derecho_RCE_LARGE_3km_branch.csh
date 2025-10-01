@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zL_branch_lpls304k_smoothwbranch
+#PBS -N zL_branch_lpfrz304k
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
@@ -29,11 +29,11 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename dpscream_rce_large_3km_lpls304k_smoothwbranch
+  setenv casename dpscream_rce_large_3km_b_lpfrz300k_wbranch
   
   # Set the case name of the branch here if applicable
-  set branch_case = dpscream_rce_large_3km_lpls304k_wbranch
-  set branch_date = "2000-02-25"
+  set branch_case = dpscream_rce_large_3km_lpfrz300k_branch
+  set branch_date = "2000-03-02"
 
   # Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
@@ -137,15 +137,15 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set do_iop_srf_prop = .false. # Use surface fluxes in IOP file?
   set do_iop_nudge_tq = .false. # Relax T&Q to observations?
   set do_iop_nudge_uv = .false. # Relax U&V to observations?
-  set do_iop_subsidence = .true. # compute LS vertical transport?
+  set do_iop_subsidence = .false. # compute LS vertical transport?
   set do_turnoff_swrad = .false. # Turn off SW calculation
   set do_turnoff_lwrad = .false. # Turn off LW calculation
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
   set stop_n = 5
-  set iop_file = RCE_iopfile_4scam_smooth_w_profile.nc #IOP file name
-  set sst_val = 304 # set constant SST value (ONLY valid for RCE case)
+  set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
+  set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
   set p3_new_icenuc = .true. # Turn off new ice nucleation scheme in P3
 # End Case specific stuff here
 

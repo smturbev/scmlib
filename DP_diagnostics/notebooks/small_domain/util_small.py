@@ -43,6 +43,14 @@ def get_comp_names(comp_name):
         runs = ["f_default","j_304K","j_296K"]
         run_names = ["Default (300K)","Warm SST (304K)","Cool SST (296K)"]
         colors = ["grey","maroon","lightblue"]
+    elif comp_name=="tracers_nuc":
+        runs = ["cooper.nuc_tend_cooper_p3","cooper.nuc_tend_hom_p3",
+                "lp05.nuc_tend_lp05_p3", "lp05.nuc_tend_hom_p3"]
+        run_names= ["Cooper old", "Cooper new",
+                    "LP05 old", "LP05 new"]
+        colors=["lightblue", "darkblue", "lightgreen", "darkgreen"]
+    else:
+        raise Exception(f"comp_name {comp_name} not defined")
     return (runs, run_names, colors)
 
 
@@ -99,20 +107,62 @@ def calc_rho(qv, p, t):
     return rho
 
 
-def calc_rhice(ds, varQ="Q", varT="T", z_units="hPa"):
+def calc_rhice(ds, varQ="Q", varT="T", z_units="hPa", magnus=True):
     """ input: xarray with variables Q and T
         output: xarray of rh wrt ice
     """
-    e_si = np.exp(9.550426 - 5723.265/ds[varT] +
-                  3.53068*np.log(ds[varT]) - 0.00728332*ds[varT])
+    if not(magnus):
+        # from wv_sat_method.f90
+        # (good down to 110 K)
+        t = ds[varT]
+        esi = np.exp(9.550426 - (5723.265 / t) + (3.53068 * np.log(t)) - (0.00728332 * t))
+    else:
+        t = ds[varT]-273.15
+        esi = 611.21 * np.exp((22.587*t)/(t+273.86))
     if z_units=="hPa":
         z = ds.lev*100
     else:
         z=ds.lev
-    w_si = (0.622 * e_si) / (z - e_si)
-    w_i = ds[varQ] / (1 - ds[varQ])
-    rh_ice = w_i/w_si * 100
+    wsi = (0.622 * esi) / z
+    wi = ds[varQ] / (1 - ds[varQ])
+    rh_ice = wi/wsi * 100
     return rh_ice
+
+def calc_rhliq(ds, varQ="Q", varT="T", z_units="hPa"):
+    """ input: xarray with variables Q and T
+        output: xarray of rh wrt liquid
+    """
+    # # Magnus formula for saturation vapor pressure
+    # t = ds[varT] - 273.15  # convert K to degC
+    # e_s = 610.94 * np.exp((17.625*t)/(t+243.04))
+    # ----
+    # from EAM wv_sat_method.F90
+    # (good for 123 < T < 332 K)
+    t = ds[varT]
+    es = ( np.exp(54.842763 - (6763.22 / t) - (4.210 * np.log(t)) +
+           (0.000367 * t) + (np.tanh(0.0415 * (t - 218.8)) *
+           (53.878 - (1331.22 / t) - (9.44523 * np.log(t)) +
+           0.014025 * t)))
+         )
+    if z_units=="hPa":
+        z = ds.lev*100
+    else:
+        z=ds.lev
+    ws = (0.622 * es) / z
+    w = ds[varQ] / (1 - ds[varQ])
+    return( w/ws * 100 )
+
+def calc_rhice_from_rhliq(ds, varT='T', varRH='RELHUM'):
+    """ convert relative humidity wrt liquid to ice 
+    using Magnus vapor pressure approximations"""
+    t = ds[varT] # K
+    es = (np.exp(54.842763 - (6763.22 / t) - (4.210 * np.log(t)) +
+          (0.000367 * t) + (np.tanh(0.0415 * (t - 218.8)) *
+          (53.878 - (1331.22 / t) - (9.44523 * np.log(t)) +
+          0.014025 * t)))
+          )
+    esi = np.exp(9.550426 - (5723.265 / t) + (3.53068 * np.log(t)) - (0.00728332 * t))
+    return (esi/es)*ds[varRH]
 
 def plot_microhist(x_array, y_array, savename=None):
     """ plots the x vs y joint histogram (normalized pdf)

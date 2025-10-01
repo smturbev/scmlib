@@ -8,9 +8,11 @@ import numpy as np
 import xarray as xr
 from scipy import stats
 
+
 # universal constants
 R = 287.058
 G = 9.80665
+
 
 def get_run_color(run_name):
     if run_name=="default":

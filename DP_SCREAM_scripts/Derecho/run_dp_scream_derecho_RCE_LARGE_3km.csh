@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#PBS -N zlpfrz300k_pert_ab
+#PBS -N zLPLS4K
 #PBS -A UWAS0108
 #PBS -l walltime=00:40:00
 #PBS -q develop
@@ -29,7 +29,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
 #######  BEGIN USER DEFINED SETTINGS
 
   # Set the name of your case here
-  setenv casename dpscream_rce_large_3km_lpfrz300k_pert_ab
+  setenv casename dpscream_rce_large_3km_LPLS_304K
 
   # Set the case directory here
   setenv casedirectory /glade/derecho/scratch/$USER/DPSCREAM_simulations
@@ -67,7 +67,7 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set num_procs = 1024
 
   # set walltime
-  set walltime = '12:00:00'
+  set walltime = '06:00:00'
 
   ## SET DOMAIN SIZE AND RESOLUTION:
   # - Note that these scripts are set to run with dx=dy=3.33 km
@@ -133,15 +133,15 @@ module load ncarenv/23.09 craype intel/2024.0.2 ncarcompilers cray-mpich hdf5 ne
   set do_iop_srf_prop = .false. # Use surface fluxes in IOP file?
   set do_iop_nudge_tq = .false. # Relax T&Q to observations?
   set do_iop_nudge_uv = .false. # Relax U&V to observations?
-  set do_iop_subsidence = .false. # compute LS vertical transport?
+  set do_iop_subsidence = .true. # compute LS vertical transport?
   set do_turnoff_swrad = .false. # Turn off SW calculation
   set do_turnoff_lwrad = .false. # Turn off LW calculation
   set startdate = 2000-01-01 # Start date in IOP file
   set start_in_sec = 0 # start time in seconds in IOP file
   set stop_option = ndays
   set stop_n = 5
-  set iop_file = RCE_iopfile_4scam_no-mean-ascent.nc #IOP file name
-  set sst_val = 300 # set constant SST value (ONLY valid for RCE case)
+  set iop_file = RCE_iopfile_4scam_no-mean-ascent_304K.nc #IOP file name # RCE_iopfile_4scam_smooth_w_profile.nc
+  set sst_val = 304 # set constant SST value (ONLY valid for RCE case)
   set p3_new_icenuc = .true. # Turn off new ice nucleation scheme in P3
   set no_icnc_limits = .false. # Turn off default ice nucleation limits on ice concentrations
 # End Case specific stuff here
@@ -250,10 +250,10 @@ cat <<EOF >> user_nl_eam
  sed_scaling_small = 1.0
  scale_all_ice = .false.
 fexcl1='FICE','EXTINCT','FREQI','FREQL','FREQR','FREQS','RELVAR','UU','VQ','VT','VU','VV','AODABS','AODABSBC','AODALL','AODBC','AODDUST','AODDUST1','AODDUST3','AODMODE1','AODMODE2','AODMODE3','AODNIR','AODPOM','AODSO4','AODSOA','AODSS','AODUV','AODVIS','BURDEN1','BURDEN2','BURDEN3','CCN3','BRUNT','ICEFRAC','LANDFRAC','OCNFRAC','SHOC_MIX','SHOC_QL','SNOWHICE','SNOWHLND','TDIFF'
-fincl2='CAPE','CIN','CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','DTENDTH','DTENDTQ','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECC','PRECL','PS','QREFHT','SOLIN','TAUX','TAUY','TGCLDCWP','TGCLDIWP','TGCLDLWP','TH7001000','TMQ','TREFHT','TS','WINDSPD_10M','crm_grid_x','crm_grid_y'
- fincl1='OMEGA','DYN_OMEGA','QRL','QRS','CLDICE','WSUB'
+fincl2='CLDLOW','CLDMED','CLDHGH','CLDTOT','CDNUMC','FLDS','FLNS','FLNSC','FLNT','FLNTC','FLUT','FLUTC','FSDS','FSDSC','FSNS','FSNSC','FSNT','FSNTC','FSNTOA','FSNTOAC','FSUTOA','FSUTOAC','LHFLX','SHFLX','LWCF','SWCF','OMEGA500','PRECC','PS','QREFHT','SOLIN','TGCLDCWP','TGCLDIWP','TGCLDLWP','TMQ','TREFHT','TS','crm_grid_x','crm_grid_y'
+ fincl1='OMEGA','QRL','QRS','CLDICE','WSUB','NUMICE'
  mfilt = 5000, 5000
- nhtfrq = -6, -6
+ nhtfrq = -6, -1
  avgflag_pertape='I','I'
  scmlat = $lat
  scmlon = $lon
